@@ -8,18 +8,25 @@ import org.springframework.stereotype.Component;
 import com.ddlab.rnd.entity.hierarchy.ContractEmployee;
 import com.ddlab.rnd.entity.hierarchy.Employee;
 import com.ddlab.rnd.entity.hierarchy.PermanetEmployee;
+import com.ddlab.rnd.entity.mappedsuperclass.BaseCard;
+import com.ddlab.rnd.entity.mappedsuperclass.CreditCard;
+import com.ddlab.rnd.entity.mappedsuperclass.DebitCard;
 import com.ddlab.rnd.entity.tableperclass.FourWheelerVehicle;
 import com.ddlab.rnd.entity.tableperclass.TwoWheelerVehicle;
 import com.ddlab.rnd.entity.tableperclass.Vehicle;
 import com.ddlab.rnd.entity.tablepersubclass.Car;
 import com.ddlab.rnd.entity.tablepersubclass.HatchBackCar;
 import com.ddlab.rnd.entity.tablepersubclass.SedanCar;
+import com.ddlab.rnd.service.MappedSuperClassService;
 import com.ddlab.rnd.service.SingleTableService;
 import com.ddlab.rnd.service.TablePerClassService;
 import com.ddlab.rnd.service.TablePerSubClassService;
 
 @Component
 public class AppAutoStart {
+	
+	@Autowired
+	private MappedSuperClassService mscService;
 
 	@Autowired
 	private SingleTableService service;
@@ -33,11 +40,33 @@ public class AppAutoStart {
 	@EventListener(ApplicationReadyEvent.class)
 	public void afterStartup() {
 		
-		saveCar();
+		showCard();
+		
+//		saveCard();
+		
+//		saveCar();
 		
 //		saveVehicles();
 
 //		saveEmployee();
+	}
+	
+	public void showCard() {
+		mscService.showCard("HDFC");
+	}
+	
+	public void saveCard() {
+		
+		CreditCard credit = new CreditCard();
+		credit.setName("SBI");
+		credit.setType("Credit Card Type");
+		mscService.saveCard(credit);
+		
+		DebitCard debit = new DebitCard();
+		debit.setName("HDFC");
+		debit.setType("Debit Card Type");
+		mscService.saveCard(debit);
+		
 	}
 	
 	public void saveCar() {
